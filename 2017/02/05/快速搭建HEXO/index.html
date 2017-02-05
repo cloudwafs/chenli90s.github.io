@@ -16,7 +16,15 @@
   
   
   
-    <meta name="description" content="">
+    <meta name="description" content="把电脑上该装的东西装好（windows下）
+首先node.js安装完之后在Terminal输入
+  $ node -v若有版本号着说明安装完成，若没有看看环境变量有没有配置
+
+git
+  $ git --version若有版本号即安装完成，没有的话请配置环境变量
+安装Hexo直接在Terminal下安装即可  $npm install hexo-cli -g
+  $ cd blog
+  $ ...">
   
   <title>快速搭建HEXO [ Mr.C ]</title>
   
@@ -119,14 +127,27 @@
       
     </p>
     
-    
+    <h2 id="把电脑上该装的东西装好（windows下）"><a href="#把电脑上该装的东西装好（windows下）" class="headerlink" title="把电脑上该装的东西装好（windows下）"></a>把电脑上该装的东西装好（windows下）</h2><ul>
+<li><p>首先<a href="node.js" title="http://nodejs.cn/#download">node.js</a><br>安装完之后在Terminal输入</p>
+<p>  <code>$ node -v</code><br>若有版本号着说明安装完成，若没有看看环境变量有没有配置</p>
+</li>
+<li><p><a href="git" title="https://git-scm.com/downloads">git</a></p>
+<p>  <code>$ git --version</code><br>若有版本号即安装完成，没有的话请配置环境变量</p>
+<h2 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h2><p>直接在Terminal下安装即可<br>  <code>$npm install hexo-cli -g
+  $ cd blog
+  $ npm install
+  $ hexo server</code><br>在你的浏览器输入127.0.0.1:4000看看是否有页面出现。这一步出现之后恭喜你搭建完成，然后看看官网的文档吧，那里写的够详细了。</p>
+<h2 id="闲扯一段"><a href="#闲扯一段" class="headerlink" title="闲扯一段"></a>闲扯一段</h2></li>
+</ul>
+<p>自从本人弄了服务器之后，倒腾博客系统一直是小弟乐此不疲的事情，从最早的workpess到现在的HEXO，其实中途使用过一段时间的HEXO安装上几天新鲜感就过去了，那时候对服务器不是很熟悉就想着有一个后台管理的blog总是方便的，所以首选了风靡一时的workpress（后来慢慢发现将他搭建出来好烦）首先是服务器上安装数据库，还有运行php得apache，还有中间出现的各种配置，经过一两天的时间算是完善了，坚持了一个月，发现了一个用java写得bolg-solo3，因为本人是做java得，好奇心上来了（也怪workpress对代码的的现实不够友好，可能是我菜吧），立马撤下了workpress，应为它不用搭建数据库（想搭建，就折腾吧），我迅速的将它部署在服务器上了。其实这个blog有个亮点就是他可以和黑客派社区（就是写这个blog的作者建立了一个社区）是关联的，所以你在你的blog上发布的文章可以显示在社区里，但很遗憾的是这个系统维护的人太少了，出现很烦的问题，就这个系统来说java写的本来就有些厚重。热情劲过了之后，又该换了吧，于是在论坛里看到一位“高人”的blog系统。用的是jekyll，这玩意跟HEXO差不多，最恼火的就是它是ruby写的，官方不建议在windows上安装。但是我也尝试了一下，各种组件安装完，就是生成文件目录都难，搞了半天撤了，这才想起我们的HEXO，哈哈。以前用过在，而且比workpress早，因为什么不用它了，估计是部署起来太简单了吧，不过现在想起来真是可笑，写博客的目的就是让自己在学习工作中记录一些有意义的东西，让自己有所沉淀。所以Hexo帮我们省去了很多时间，把更多的经历放在写作上。</p>
+
   </article>
   <div class="random-toc-area">
   <button class="btn-hide-toc btn-hide-toc-show" style="display: none" onclick="TOCToggle()">Show TOC</button>
   <button class="btn-hide-toc btn-hide-toc-hide" onclick="TOCToggle()">Hide TOC</button>
   <div class="random-toc">
     <h2>Table of Content</h2>
-    
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#把电脑上该装的东西装好（windows下）"><span class="toc-text">把电脑上该装的东西装好（windows下）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装Hexo"><span class="toc-text">安装Hexo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#闲扯一段"><span class="toc-text">闲扯一段</span></a></li></ol>
   </div>
 </div>
 
