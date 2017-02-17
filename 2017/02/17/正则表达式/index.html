@@ -1,0 +1,477 @@
+
+
+
+
+
+
+
+<!doctype html>
+<html lang="zh-cn">
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <meta name="author" content="chenli">
+  
+  
+  
+  
+    <meta name="description" content="正则表达式  正则这个东西不常用，用的时候就忘记了所以有必要总结一番。
+
+ 正则表达式：其实一种规则，有自己特殊的应用,其作用就是针对于字符串进行操作。正则：就是用于操作字符串的规则,其中这些规则使用了一些字符表示。
+
+预定义字符：1. .  表示任何字符
+2. \d 表示数字
+3. \D 表示非数字
+4. \s 空白字符 [\t\n\x0B\f\r]
+5. \S 非空白字符 [^\s]
+6...">
+  
+  <title>正则表达式 [ Mr.C ]</title>
+  
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+  <link rel="stylesheet" href="/css/random.css">
+<link rel="stylesheet" href="/css/vegas.min.css">
+<link rel="stylesheet" href="/css/highlight-railscasts.css">
+<link rel="stylesheet" href="/css/jquery.fancybox.css">
+<link rel="stylesheet" href="/css/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/jquery.fancybox-thumbs.css">
+<link rel="stylesheet" href="/css/plyr.css">
+  
+</head>
+
+<body>
+<div class="side-navigate hide-area">
+  
+  
+    <div class="item next">
+      <a href="/2017/02/05/快速搭建HEXO/">
+        <div class="item-icon"></div>
+      </a>
+      <div class="item-title">
+        快速搭建HEXO
+      </div>
+    </div>
+  
+</div>
+<div id="outer-container" class="hide-area">
+<div id="container">
+  <div id="menu-outer" class="slide-down">
+    <div id="menu-inner">
+      <div id="brand">
+        
+        <a onClick="openUserCard()">
+          <img id="avatar" src="/avatar.jpg"/>
+          <div id="homelink">Mr.C</div>
+        </a>
+      </div>
+      <div id="menu-list">
+        <ul>
+        
+        
+          
+            <li>
+          
+            <a href="/index.html">Home</a>
+            
+          </li>
+        
+          
+            <li>
+          
+            <a href="/archives">Archives</a>
+            
+          </li>
+        
+          
+            <li>
+          
+            <a href="/tags">Tags</a>
+            
+          </li>
+        
+          
+            <li>
+          
+            <a href="/categories">Categories</a>
+            
+          </li>
+        
+          
+            <li>
+          
+            <a href="/about">About</a>
+            
+          </li>
+        
+          
+            <li>
+          
+            <a href="https://github.com/chenli90s">Github</a>
+            
+          </li>
+        
+        </ul>
+      </div>
+      <div id="show-menu">
+        <button>Menu</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="content-outer">
+    <div id="content-inner">
+      
+      
+  <article id="post">
+    <h1>正则表达式</h1>
+    <p class="page-title-sub">
+      <span id = "post-title-date">Created at 2017-02-17</span>
+      
+        <span id = "post-title-updated">Updated at 2017-02-17</span>
+      
+      
+      
+      <span id = "post-title-tags">
+      Tag
+      
+      
+        
+        
+        <a href="/tags/regx/">regx</a>
+      
+      </span>
+      
+    </p>
+    
+    <h2 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h2><p>  正则这个东西不常用，用的时候就忘记了所以有必要总结一番。</p>
+<blockquote>
+<p> 正则表达式：其实一种规则，有自己特殊的应用,其作用就是针对于字符串进行操作。<br>正则：就是用于操作字符串的规则,其中这些规则使用了一些字符表示。</p>
+</blockquote>
+<h3 id="预定义字符："><a href="#预定义字符：" class="headerlink" title="预定义字符："></a>预定义字符：</h3><pre><code>1. .  表示任何字符
+2. \d 表示数字
+3. \D 表示非数字
+4. \s 空白字符 [\t\n\x0B\f\r]
+5. \S 非空白字符 [^\s]
+6. \w 单词字符 [a-z A-Z ]
+7. \W 非的单词字符 [^\w]
+</code></pre><h3 id="Gredy-数量词"><a href="#Gredy-数量词" class="headerlink" title="Gredy 数量词"></a>Gredy 数量词</h3><pre><code>1. X？ X一次或一次也没有
+2. X*  X,0次或多次
+3. X+  X一次或多次
+4. X{n} X恰好n次
+5. X{n,} X至少n次
+6. X{n,m} X至少n次，但不超过m次
+</code></pre><h3 id="范围表示"><a href="#范围表示" class="headerlink" title="范围表示"></a>范围表示</h3><pre><code>1. [abc] a、b 或 c（简单类）
+2. [^abc] 任何字符，除了 a、b 或 c（否定） 
+3. [a-zA-Z]  a 到 z 或 A 到 Z，两头的字母包括在内（范围）
+4. [a-d[m-p]]  a 到 d 或 m 到 p：[a-dm-p]（并集） 
+5. [a-z&amp;&amp;[def]]     d、e 或 f（交集） 
+6. [a-z&amp;&amp;[^bc]]    a 到 z，除了 b 和 c：[ad-z]（减去） 
+7. [a-z&amp;&amp;[^m-p]]    a 到 z，而非 m 到 p：[a-lq-z]（减去）
+</code></pre><h3 id="常用的正则表达式的收集"><a href="#常用的正则表达式的收集" class="headerlink" title="常用的正则表达式的收集"></a>常用的正则表达式的收集</h3><pre><code>匹配中文字符的正则表达式： [/u4e00-/u9fa5]
+
+匹配双字节字符(包括汉字在内)：[^/x00-/xff]
+
+
+匹配空行的正则表达式：/n[/s| ]*/r
+
+匹配HTML标记的正则表达式：/&lt;(.*)&gt;.*&lt;///1&gt;|&lt;(.*) //&gt;/
+
+匹配首尾空格的正则表达式：(^/s*)|(/s*$)
+
+匹配IP地址的正则表达式：/(/d+)/.(/d+)/.(/d+)/.(/d+)/g //
+
+
+匹配Email地址的正则表达式：/w+([-+.]/w+)*@/w+([-.]/w+)*/./w+([-.]/w+)*
+
+匹配网址URL的正则表达式：http://([/w-]+/.)+[/w-]+(/[/w- ./?%&amp;=]*)?
+
+
+sql语句：^(select|drop|delete|create|update|insert).*$
+
+1、非负整数：^/d+$
+
+2、正整数：^[0-9]*[1-9][0-9]*$
+
+3、非正整数：^((-/d+)|(0+))$
+
+4、负整数：^-[0-9]*[1-9][0-9]*$
+
+5、整数：^-?/d+$
+
+6、非负浮点数：^/d+(/./d+)?$
+
+7、正浮点数：^((0-9)+/.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*/.[0-9]+)|([0-9]*[1-9][0-9]*))$
+
+8、非正浮点数：^((-/d+/./d+)?)|(0+(/.0+)?))$
+
+9、负浮点数：^(-((正浮点数正则式)))$
+
+10、英文字符串：^[A-Za-z]+$
+
+11、英文大写串：^[A-Z]+$
+
+12、英文小写串：^[a-z]+$
+
+13、英文字符数字串：^[A-Za-z0-9]+$
+
+14、英数字加下划线串：^/w+$
+
+15、E-mail地址：^[/w-]+(/.[/w-]+)*@[/w-]+(/.[/w-]+)+$
+
+16、URL：^[a-zA-Z]+://(/w+(-/w+)*)(/.(/w+(-/w+)*))*(/?/s*)?$ 
+或：^http:////[A-Za-z0-9]+/.[A-Za-z0-9]+[//=/?%/-&amp;_~`@[/]/&apos;:+!]*([^&lt;&gt;/&quot;/&quot;])*$
+
+17、邮政编码：^[1-9]/d{5}$
+
+18、中文：^[/u0391-/uFFE5]+$
+
+19、电话号码：^((/(/d{2,3}/))|(/d{3}/-))?(/(0/d{2,3}/)|0/d{2,3}-)?[1-9]/d{6,7}(/-/d{1,4})?$
+
+20、手机号码：^((/(/d{2,3}/))|(/d{3}/-))?13/d{9}$
+
+21、双字节字符(包括汉字在内)：^/x00-/xff
+
+22、匹配首尾空格：(^/s*)|(/s*$)（像vbscript那样的trim函数）
+
+23、匹配HTML标记：&lt;(.*)&gt;.*&lt;///1&gt;|&lt;(.*) //&gt;
+
+24、匹配空行：/n[/s| ]*/r
+
+25、提取信息中的网络链接：(h|H)(r|R)(e|E)(f|F) *= *(&apos;|&quot;)?(/w|//|//|/.)+(&apos;|&quot;| *|&gt;)?
+
+26、提取信息中的邮件地址：/w+([-+.]/w+)*@/w+([-.]/w+)*/./w+([-.]/w+)*
+
+27、提取信息中的图片链接：(s|S)(r|R)(c|C) *= *(&apos;|&quot;)?(/w|//|//|/.)+(&apos;|&quot;| *|&gt;)?
+
+28、提取信息中的IP地址：(/d+)/.(/d+)/.(/d+)/.(/d+)
+
+29、提取信息中的中国手机号码：(86)*0*13/d{9}
+
+30、提取信息中的中国固定电话号码：(/(/d{3,4}/)|/d{3,4}-|/s)?/d{8}
+
+31、提取信息中的中国电话号码（包括移动和固定电话）：(/(/d{3,4}/)|/d{3,4}-|/s)?/d{7,14}
+
+32、提取信息中的中国邮政编码：[1-9]{1}(/d+){5}
+
+33、提取信息中的浮点数（即小数）：(-?/d*)/.?/d+
+
+34、提取信息中的任何数字 ：(-?/d*)(/./d+)?
+
+35、IP：(/d+)/.(/d+)/.(/d+)/.(/d+)
+
+36、电话区号：/^0/d{2,3}$/
+
+37、腾讯QQ号：^[1-9]*[1-9][0-9]*$
+
+38、帐号(字母开头，允许5-16字节，允许字母数字下划线)：^[a-zA-Z][a-zA-Z0-9_]{4,15}$
+
+39、中文、英文、数字及下划线：^[/u4e00-/u9fa5_a-zA-Z0-9]+$
+</code></pre>
+  </article>
+  <div class="random-toc-area">
+  <button class="btn-hide-toc btn-hide-toc-show" style="display: none" onclick="TOCToggle()">Show TOC</button>
+  <button class="btn-hide-toc btn-hide-toc-hide" onclick="TOCToggle()">Hide TOC</button>
+  <div class="random-toc">
+    <h2>Table of Content</h2>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#正则表达式"><span class="toc-text">正则表达式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#预定义字符："><span class="toc-text">预定义字符：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Gredy-数量词"><span class="toc-text">Gredy 数量词</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#范围表示"><span class="toc-text">范围表示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#常用的正则表达式的收集"><span class="toc-text">常用的正则表达式的收集</span></a></li></ol></li></ol>
+  </div>
+</div>
+
+  
+<nav id="pagination">
+  
+
+  
+
+  
+    <a href="/2017/02/05/快速搭建HEXO/" class="next">Next post 快速搭建HEXO &rarr;</a>
+  
+</nav>
+
+  <!-- JiaThis Button BEGIN -->
+
+<!-- JiaThis Button END -->
+
+
+      
+      <div class="ds-thread" data-thread-key="2017/02/17/正则表达式/" data-title="正则表达式" data-url="http://chenli90s.cn/2017/02/17/正则表达式/"></div>
+      
+      
+      
+    </div>
+  </div>
+
+  <div id="bottom-outer">
+    <div id="bottom-inner">
+      Site by chenli using
+      <a href="http://hexo.io">Hexo</a> & <a href="https://github.com/stiekel/hexo-theme-random">Random</a>
+      <br>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  <script type="text/javascript">
+var duoshuoQuery = {short_name:"3013b14268727e7f335e8468cc65b30a"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  (document.getElementsByTagName('head')[0] 
+   || document.getElementsByTagName('body')[0]).appendChild(ds);
+})();
+</script>
+
+
+
+<div id="user-card">
+  <div class="center-field">
+    <img class="avatar" src="/avatar.jpg">
+    <p id="description"></p>
+    <ul class="social-icon">
+  
+  
+    <li>
+      <a href="https://github.com/chenli90s">
+        
+          <i class="icon iconfont github">&#xe606;</i>
+        
+      </a>
+    </li>
+  
+    <li>
+      <a href="https://twitter.com/chenli90s">
+        
+          <i class="icon iconfont twitter">&#xe600;</i>
+        
+      </a>
+    </li>
+  
+    <li>
+      <a href="http://weibo.com/chenli90s">
+        
+          <i class="icon iconfont weibo">&#xe602;</i>
+        
+      </a>
+    </li>
+  
+</ul>
+  </div>
+</div>
+
+
+<div id="btn-view">Hide</div>
+
+<script>
+// is trigger analytics / tongji script
+var isIgnoreHost = false;
+
+if(window && window.location && window.location.host) {
+  isIgnoreHost = ["localhost","127.0.0.1"].some(function(address){
+    return 0 === window.location.host.indexOf(address);
+  });
+}
+
+var isTriggerAnalytics = !( true && isIgnoreHost );
+
+</script>
+
+
+
+
+  
+  
+    <script src="/js/jquery-2.2.3.min.js"></script>
+  
+    <script src="/js/vegas.min.js"></script>
+  
+    <script src="/js/random.js"></script>
+  
+    <script src="/js/highlight.pack.js"></script>
+  
+    <script src="/js/jquery.mousewheel.pack.js"></script>
+  
+    <script src="/js/jquery.fancybox.pack.js"></script>
+  
+    <script src="/js/jquery.fancybox-thumbs.js"></script>
+  
+    <script src="/js/plyr.js"></script>
+  
+
+<script>
+
+  // fancybox
+  var backgroundImages = [];
+  
+  $('#post').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox') || $(this).parent().hasClass('fancybox-thumb')) return;
+      var alt = this.alt || this.title;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'post' + i);
+    });
+  });
+  $(".fancybox").fancybox();
+
+var vegasConfig = {"preload­Image":true,"transition":["slideLeft2","slideRight2","flash2"],"timer":true,"delay":5000,"shuffle":true,"count":28};
+var unsplashConfig = {"gravity":"north"};
+// is show background images
+var turnoffBackgroundImage = false;
+
+
+
+  turnoffBackgroundImage = true;
+
+
+var backgroundColor = "rgb(215, 204, 200)";
+
+$(".fancybox-thumb").fancybox({
+  prevEffect: 'none',
+  nextEffect: 'none',
+  helpers: {
+    title: {
+      type: 'outside'
+    },
+    thumbs: {
+      width: 50,
+      height: 50
+    }
+  }
+});
+
+// show video with plyr
+$(".video-container iframe").each(function(i){
+  var url = $(this).attr('src');
+  var id = url.split('/').pop();
+  var plyrContainer = document.createElement('div');
+  plyrContainer.className = 'plyr';
+  var plyrElement = document.createElement('div');
+  plyrElement.dataset.videoId = id;
+  switch(true) {
+    case url.search('youtube.com') >= 0:
+      plyrElement.dataset.type = 'youtube';
+      break;
+    case url.search('vimeo.com') >= 0:
+      plyrElement.dataset.type = 'vimeo';
+      break;
+    default:
+      return;
+  };
+  plyrContainer.appendChild(plyrElement);
+  $(this).parent().html(plyrContainer);
+});
+plyr.setup('.plyr', {iconUrl: '/css/sprite.svg'});
+</script>
+</body>
+</html>
+
