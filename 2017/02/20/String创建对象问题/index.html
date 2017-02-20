@@ -1,0 +1,368 @@
+
+
+
+
+
+
+
+<!doctype html>
+<html lang="zh-cn">
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <meta name="author" content="chenli">
+  
+  
+  
+  
+    <meta name="description" content="1String str=new String("aaa");
+  这行代码究竟创建了几个String对象呢？答案是2个，而不是3个。一个就是放在常量池中的 “aaa” 对象，而另一个就是创建出来的放在堆时原实例对象，而另当然这里的str本身只是一个引用，放在栈里，用来指向堆中创建出来的对象。
+  常量池(constant pool)指的是在编译期被确定，并被保存在已编译的.class文件中的...">
+  
+  <title>String创建对象问题 [ Mr.C ]</title>
+  
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+  <link rel="stylesheet" href="/css/random.css">
+<link rel="stylesheet" href="/css/vegas.min.css">
+<link rel="stylesheet" href="/css/highlight-railscasts.css">
+<link rel="stylesheet" href="/css/jquery.fancybox.css">
+<link rel="stylesheet" href="/css/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/jquery.fancybox-thumbs.css">
+<link rel="stylesheet" href="/css/plyr.css">
+  
+</head>
+
+<body>
+<div class="side-navigate hide-area">
+  
+  
+    <div class="item next">
+      <a href="/2017/02/17/正则表达式/">
+        <div class="item-icon"></div>
+      </a>
+      <div class="item-title">
+        正则表达式
+      </div>
+    </div>
+  
+</div>
+<div id="outer-container" class="hide-area">
+<div id="container">
+  <div id="menu-outer" class="slide-down">
+    <div id="menu-inner">
+      <div id="brand">
+        
+        <a onClick="openUserCard()">
+          <img id="avatar" src="/avatar.jpg"/>
+          <div id="homelink">Mr.C</div>
+        </a>
+      </div>
+      <div id="menu-list">
+        <ul>
+        
+        
+          
+            <li>
+          
+            <a href="/index.html">Home</a>
+            
+          </li>
+        
+          
+            <li>
+          
+            <a href="/archives">Archives</a>
+            
+          </li>
+        
+          
+            <li>
+          
+            <a href="/tags">Tags</a>
+            
+          </li>
+        
+          
+            <li>
+          
+            <a href="/categories">Categories</a>
+            
+          </li>
+        
+          
+            <li>
+          
+            <a href="/about">About</a>
+            
+          </li>
+        
+          
+            <li>
+          
+            <a href="https://github.com/chenli90s">Github</a>
+            
+          </li>
+        
+        </ul>
+      </div>
+      <div id="show-menu">
+        <button>Menu</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="content-outer">
+    <div id="content-inner">
+      
+      
+  <article id="post">
+    <h1>String创建对象问题</h1>
+    <p class="page-title-sub">
+      <span id = "post-title-date">Created at 2017-02-20</span>
+      
+        <span id = "post-title-updated">Updated at 2017-02-20</span>
+      
+      
+      
+      <span id = "post-title-tags">
+      Tag
+      
+      
+        
+        
+        <a href="/tags/javase/">javase</a>
+      
+      </span>
+      
+    </p>
+    
+      <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">String str=<span class="keyword">new</span> String(<span class="string">"aaa"</span>);</div></pre></td></tr></table></figure>
+<p>  这行代码究竟创建了几个String对象呢？答案是2个，而不是3个。一个就是放在常量池中的 “aaa” 对象，而另一个就是创建出来的放在堆时原实例对象，而另当然这里的str本身只是一个引用，放在栈里，用来指向堆中创建出来的对象。</p>
+<p>  常量池(constant pool)指的是在编译期被确定，并被保存在已编译的.class文件中的一些数据。它包括了关于类、方法、接口等中的常量，也包括字符串常量。只创建1个对象。这里涉及到字符串常量池，在JVM中有一个字符串池，它用来保存很多可以被共享的String对象，这样如果我们在使用同样字面字符串时，它就使用字符串池中同字面的字符串。当然我们可以使用String对象的intern()方法来访问String对象在字符串池中所对应的常量对象。</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">String str=<span class="keyword">new</span> String(<span class="string">"aaa"</span>);</div></pre></td></tr></table></figure>
+<p>  上面这行代码被执行的时候，JVM先到字符串池中查找，看是否已经存在值为”aaa”的对象，如果存在，则不再创建新的对象，直接返回已存在对象的引用；如果不存在，则先创建这个对象，然后把它加入到字符串池中，再将它的引用返回。</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">String str1=<span class="string">"aaa"</span>;   </div><div class="line">String str2=<span class="string">"aaa"</span>;</div></pre></td></tr></table></figure>
+<p>  也只创建1个对象。能过上面的解释这个就更清楚了，在执行第二行代码时，aaa字符串对象在池中已存在，所以直接返回池中已存在的那个字符串对象。</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">String str=<span class="string">"aaa"</span>+<span class="string">"bbb"</span>;</div></pre></td></tr></table></figure>
+<p>  还是只创建1个对象。由于常量字符串是在编译的时候就也被确定的，又因”aaa”和”bbb”都是常量，因此变量str的值在编译时就可以确定。这行代码编译后的与String str=”aaabbb”;是一样的，这与我们平时好像不太一样啊？一般使用“+”连接两个字符串都会产生另一个新的字符对象。下面我们看一下例子就明白了：</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">String str1 = <span class="string">"aaa"</span>;  </div><div class="line">   String str2 = <span class="string">"bbb"</span>;  </div><div class="line">   String str3 = <span class="string">"aaabbb"</span>;  </div><div class="line"> </div><div class="line">   String str4 = <span class="string">"aaa"</span> + <span class="string">"bbb"</span>;<span class="comment">//不会产生新的字符串对象  </span></div><div class="line">System.out.println(str3 == str4);<span class="comment">//true  </span></div><div class="line"> </div><div class="line">str4 = str1 + <span class="string">"bbb"</span>;<span class="comment">//会产生新的字符串对象  </span></div><div class="line">System.out.println(str3 == str4);<span class="comment">//false  </span></div><div class="line"> </div><div class="line">str4 = str1 + str2;<span class="comment">//会产生新的字符串对象  </span></div><div class="line">System.out.println(str3 == str4);<span class="comment">//false</span></div></pre></td></tr></table></figure>
+<p>  从上面例子我们就可以得出：使用“+”连接的两个字符串本身就是字面常量字符串时，如果池中存在这样连接后的字符串，则是不会重新创建对象，而是直接引用池中的字符串对象；如果“+”连接的两字符串中只要有一个不是字面常量串（即定义过的），是会产生新的字符串对象。<br>  凡事也有例外，这个也不例外：如果“+”连接的字符串中两个或一个不是“字面常量”，但如果定义成常量字符串时，情况又有变化：</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">final</span> String str1 = <span class="string">"aaa"</span>;  </div><div class="line"><span class="keyword">final</span> String str2 = <span class="string">"bbb"</span>;  </div><div class="line">String str3 = <span class="string">"aaabbb"</span>;  </div><div class="line"> </div><div class="line"><span class="comment">/* </span></div><div class="line">	 * 因为str1与str2都定义成了常量，所以编译时就能确定，编译时      就会将常量替换，等同于 </div><div class="line">	 * str4 = "aaa"+"bbb"，因此不产生新对象 </div><div class="line"> */  </div><div class="line">String str4 = str1 + str2;  </div><div class="line">System.out.println(str3 == str4);<span class="comment">//true</span></div></pre></td></tr></table></figure>
+<p>  但如果先定义final字符串，但未在定义处初始化，而初始化在块中，如下：</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//此时str1与str2相当于变量，而不是常，因为块是在运行时才能确定，在编译时不能确定  </span></div><div class="line"><span class="keyword">final</span> <span class="keyword">static</span> String str1;    </div><div class="line">   <span class="keyword">final</span> <span class="keyword">static</span> String str2;    </div><div class="line">   <span class="keyword">static</span> &#123;    </div><div class="line">       str1 =<span class="string">"aaa"</span>;    </div><div class="line">       str2 =<span class="string">"bbb"</span>;    </div><div class="line">   &#125;  </div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;    </div><div class="line">       String str3 = str1 + str2;  </div><div class="line">       String str4 =<span class="string">"aaabbb"</span>;    </div><div class="line">       System.out.println(str3==str4);   <span class="comment">//输出为false  </span></div><div class="line">   &#125;    </div><div class="line">String str=<span class="string">" "</span>;与String str=<span class="keyword">new</span> String();  </div><div class="line">str=<span class="string">" "</span>会放入池中，但<span class="keyword">new</span> String()不会放入池中。</div></pre></td></tr></table></figure>
+<p>  <strong>String的intern()方法</strong></p>
+<p>  “当调用 intern 方法时，如果池已经包含一个等于此 String 对象的字符串（该对象由 equals(Object) 方法确定），则返回池中的字符串；否则，将此 String 对象添加到池中，并且返回此 String 对象的引用。它遵循对于任何两个字符串 s 和 t，当且仅当 s.equals(t) 为 true 时，s.intern() == t.intern() 才为 true”，这是jdk文档原文注解。</p>
+<p>  现在我们回到最开头的那个例子，为什么String str=new String(“aaa”);会产生2个对象？一个是”aaa”又作为字符串构造函数的参数，但”aaa”自己就是一个字符串，在传进构造函数前就已创建了一个字符对象，实质上与就好比是第二个实例：String str=”aaa”; ，它创建的字符串对象会放入到池中，并且引用的也是池中的那个字符串对象；另一个就是通过new String()构造函数创建的。所以new String(“aaa”)会产生两个对象，也就是说通过此种方式创建字符串对象时，会先将字符串参数对象放入对象池，然后另外创建一个字符串对象。</p>
+<p>  理解完new String(“aaa”)为什么会产生两个对象，我们再来看看new String(char value[])这样的方式创建时，又会不会把字符串对象放入到池中呢？答案是不会的。因为传递给构造函数的是一个字符数组，而不是像前面传递的是一个字面常量字符串参数那样，将字符串参数本身放入池中。那么我们现在如果证明new String(char value[])未将字符串对象放入池中，我们可以写一个简单的测试，运行时打开XP的任务管理器，查看操作系统的内存使用情况就可以初步确认：</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> size = <span class="number">10000000</span>;  </div><div class="line"><span class="keyword">char</span> c[] = <span class="keyword">new</span> <span class="keyword">char</span>[size];  </div><div class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++) &#123;  </div><div class="line">   c[i] = <span class="string">'a'</span>;  </div><div class="line">&#125;  </div><div class="line"><span class="comment">//使用带字符数组参数构造函数创建字符串时，字符串对象不会放入字符串池  </span></div><div class="line">String str1 = <span class="keyword">new</span> String(c);  </div><div class="line">System.out.println(<span class="string">"String字符串对象创建完毕..."</span>);  </div><div class="line">Thread.sleep(<span class="number">5000</span>);  </div><div class="line">str1.intern();<span class="comment">//到里会看见内存增加  </span></div><div class="line">System.out.println(<span class="string">"第一次调用intern()完毕..."</span>);  </div><div class="line">Thread.sleep(<span class="number">5000</span>);  </div><div class="line">str1.intern();<span class="comment">//再过5秒将看不到内存增长，因为池中有了，不会再放入，所以内存无变化  </span></div><div class="line">System.out.println(<span class="string">"第二次调用intern()完毕..."</span>);  </div><div class="line">Thread.sleep(<span class="number">5000</span>);</div></pre></td></tr></table></figure>
+<p>  所以创建字符串对象放入并放入池中有二种方式：第一种就是直接使用字面常量定义字符串时，如 String str=”aaa”; ，str会引用放入池中的对象；第二种就是使用带字符串参数的字符串构造函数，并且此时传入的参数值要是字符串常量形式，而不能是变量的形式，也就是说只能是 String str=new String(“aaa”);形式，而不能是先定义 String s = “aaa”，然后再使用 String str=new String(s);来创建对象，new String(s);此时只创建一个对象，但如果池中不存在时我们可以使用intern方法将它放入池中。当然上面放入池中的前提是池中还不存在这些字符串对象。<br>  其实，当我们仔细研究时，发现放入池中只实质上只存在一种时机，那就是：直接使用字面常量字符串时。上面所说的两种时机实质上就是直接使用了字面常的字符串而将其放入池中的。</p>
+<p>  上面多处提到了JVM中的堆栈，下面小结一下各自原作用：<br>  栈用来保存基本类型与对象的引用的，基本型在创建前会查看Stack中是否已经有, 有则指向, 没有则创建。<br>  String内部是以字符串数组来存储字符串的，因此可以认为与char[]等同, String a= “abc”,首先在Heap中创一个对象,再到Stack中找char[]是否存在,有则指向该地址, 无则在Stack中创建数组。new出来的都是在Heap中，堆是用于存储对象的</p>
+
+  </article>
+  <div class="random-toc-area">
+  <button class="btn-hide-toc btn-hide-toc-show" style="display: none" onclick="TOCToggle()">Show TOC</button>
+  <button class="btn-hide-toc btn-hide-toc-hide" onclick="TOCToggle()">Hide TOC</button>
+  <div class="random-toc">
+    <h2>Table of Content</h2>
+    
+  </div>
+</div>
+
+  
+<nav id="pagination">
+  
+
+  
+
+  
+    <a href="/2017/02/17/正则表达式/" class="next">Next post 正则表达式 &rarr;</a>
+  
+</nav>
+
+  <!-- JiaThis Button BEGIN -->
+
+<!-- JiaThis Button END -->
+
+
+      
+      <div class="ds-thread" data-thread-key="2017/02/20/String创建对象问题/" data-title="String创建对象问题" data-url="http://chenli90s.cn/2017/02/20/String创建对象问题/"></div>
+      
+      
+      
+    </div>
+  </div>
+
+  <div id="bottom-outer">
+    <div id="bottom-inner">
+      Site by chenli using
+      <a href="http://hexo.io">Hexo</a> & <a href="https://github.com/stiekel/hexo-theme-random">Random</a>
+      <br>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  <script type="text/javascript">
+var duoshuoQuery = {short_name:"3013b14268727e7f335e8468cc65b30a"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  (document.getElementsByTagName('head')[0] 
+   || document.getElementsByTagName('body')[0]).appendChild(ds);
+})();
+</script>
+
+
+
+<div id="user-card">
+  <div class="center-field">
+    <img class="avatar" src="/avatar.jpg">
+    <p id="description"></p>
+    <ul class="social-icon">
+  
+  
+    <li>
+      <a href="https://github.com/chenli90s">
+        
+          <i class="icon iconfont github">&#xe606;</i>
+        
+      </a>
+    </li>
+  
+    <li>
+      <a href="https://twitter.com/chenli90s">
+        
+          <i class="icon iconfont twitter">&#xe600;</i>
+        
+      </a>
+    </li>
+  
+    <li>
+      <a href="http://weibo.com/chenli90s">
+        
+          <i class="icon iconfont weibo">&#xe602;</i>
+        
+      </a>
+    </li>
+  
+</ul>
+  </div>
+</div>
+
+
+<div id="btn-view">Hide</div>
+
+<script>
+// is trigger analytics / tongji script
+var isIgnoreHost = false;
+
+if(window && window.location && window.location.host) {
+  isIgnoreHost = ["localhost","127.0.0.1"].some(function(address){
+    return 0 === window.location.host.indexOf(address);
+  });
+}
+
+var isTriggerAnalytics = !( true && isIgnoreHost );
+
+</script>
+
+
+
+
+  
+  
+    <script src="/js/jquery-2.2.3.min.js"></script>
+  
+    <script src="/js/vegas.min.js"></script>
+  
+    <script src="/js/random.js"></script>
+  
+    <script src="/js/highlight.pack.js"></script>
+  
+    <script src="/js/jquery.mousewheel.pack.js"></script>
+  
+    <script src="/js/jquery.fancybox.pack.js"></script>
+  
+    <script src="/js/jquery.fancybox-thumbs.js"></script>
+  
+    <script src="/js/plyr.js"></script>
+  
+
+<script>
+
+  // fancybox
+  var backgroundImages = [];
+  
+  $('#post').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox') || $(this).parent().hasClass('fancybox-thumb')) return;
+      var alt = this.alt || this.title;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'post' + i);
+    });
+  });
+  $(".fancybox").fancybox();
+
+var vegasConfig = {"preload­Image":true,"transition":["slideLeft2","slideRight2","flash2"],"timer":true,"delay":5000,"shuffle":true,"count":28};
+var unsplashConfig = {"gravity":"north"};
+// is show background images
+var turnoffBackgroundImage = false;
+
+
+
+  turnoffBackgroundImage = true;
+
+
+var backgroundColor = "rgb(215, 204, 200)";
+
+$(".fancybox-thumb").fancybox({
+  prevEffect: 'none',
+  nextEffect: 'none',
+  helpers: {
+    title: {
+      type: 'outside'
+    },
+    thumbs: {
+      width: 50,
+      height: 50
+    }
+  }
+});
+
+// show video with plyr
+$(".video-container iframe").each(function(i){
+  var url = $(this).attr('src');
+  var id = url.split('/').pop();
+  var plyrContainer = document.createElement('div');
+  plyrContainer.className = 'plyr';
+  var plyrElement = document.createElement('div');
+  plyrElement.dataset.videoId = id;
+  switch(true) {
+    case url.search('youtube.com') >= 0:
+      plyrElement.dataset.type = 'youtube';
+      break;
+    case url.search('vimeo.com') >= 0:
+      plyrElement.dataset.type = 'vimeo';
+      break;
+    default:
+      return;
+  };
+  plyrContainer.appendChild(plyrElement);
+  $(this).parent().html(plyrContainer);
+});
+plyr.setup('.plyr', {iconUrl: '/css/sprite.svg'});
+</script>
+</body>
+</html>
+
